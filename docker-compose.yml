@@ -1,0 +1,23 @@
+version: '3'
+services:
+  echo-server:
+    image: ealen/echo-server:latest
+    container_name: echo-server
+    environment:
+      - ENABLE__ENVIRONMENT=false
+    networks: 
+      - my-network
+  reverse-proxy:
+    image: nginx:latest
+    container_name: reverse-proxy
+    volumes: 
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    links: 
+      - echo-server
+    ports: 
+      - 3000:80
+    networks: 
+      - my-network
+networks: 
+  my-network:
+    driver: bridge
